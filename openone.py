@@ -1,9 +1,9 @@
 import cv2
 
 # open device
-capture = cv2.VideoCapture()
+cap = cv2.VideoCapture(0)
 
-if not (capture.isOpened()):
+if not (cap.isOpened()):
 	print("Could not open video device")
 
 #To set the resolution
