@@ -7,12 +7,19 @@ if not (cap.isOpened()):
 	print("Could not open video device")
 
 #To set the resolution
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH, 640))
+height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT, 480))
+
+# set up writer
+writer = cv2.VideoWriter('samplevideo.mp4', cv2.VideoWriter_fourcc(*'DIVX'), 30, (width,height))
+# DIVX is the video codec, works on all platforms
+
 
 while(True):
 	# Capture frame-by-frame
 	ret, frame = cap.read()
+
+	writer.write(frame)
 
 	# Display the resulting frame
 	cv2.imshow('preview',frame)
@@ -23,4 +30,5 @@ while(True):
 
 # When everything done, release the capture 
 cap.release()
+writer.release()
 cv2.destroyAllWindows()
