@@ -1,14 +1,14 @@
 import cv2
 
 # open device
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(-1)
 
 if not (cap.isOpened()):
 	print("Could not open video device")
 
 #To set the resolution
-cap.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH, 640)
-cap.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT, 480)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
 while(True):
 	# Capture frame-by-frame
