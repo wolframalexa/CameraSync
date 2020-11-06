@@ -2,3 +2,5 @@ mili@mili-jetson-nano:~/Documents/AutonomyLab/CameraSync$ python3 openone.py
 OpenCV: FFMPEG: tag 0x58564944/'DIVX' is not supported with codec id 13 and format 'mp4 / MP4 (MPEG-4 Part 14)'
 OpenCV: FFMPEG: fallback to use tag 0x7634706d/'mp4v'
 Gtk-Message: 11:22:16.455: Failed to load module "canberra-gtk-module"
+
+System Throttled due to over-current
