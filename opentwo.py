@@ -27,8 +27,8 @@ while(True):
 	writer2.write(frame2)
 
 	# Display the resulting frame
-	cv2.imshow('preview',frame1)
-	cv2.imshow('preview',frame2)
+	cv2.imshow('preview1',frame1)
+	cv2.imshow('preview2',frame2)
 
 	#Waits for a user input to quit the application
 	if cv2.waitKey(1) & 0xFF == ord('q'):
