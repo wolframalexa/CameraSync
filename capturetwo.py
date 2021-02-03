@@ -2,8 +2,12 @@ import cv2
 import math
 import time
 
-imagesFolder = "/captures"
-timestamps = open("timestamps.txt",a)
+def get_time():
+        return round(time.time() * 1000)
+
+
+imagesFolder = "~/Documents/AutonomyLab/CameraSync/captures"
+timestamps = open("timestamps.txt",'a')
 
 # open device
 camera1 = cv2.VideoCapture(0)
@@ -16,8 +20,9 @@ if not (camera2.isOpened()):
 
 # get frame rate
 frameRate1 = camera1.get(5)
+print(frameRate1)
 frameRate2 = camera2.get(5)
-
+print(frameRate2)
 
 
 #To get the resolution
@@ -42,14 +47,19 @@ while(True):
 	cv2.imshow('preview2',frame2)
 
 	# Capture frames every second
-	frameId = cap.get(1) # current frame number
+	frameId = camera1.get(1) # current frame number
 	if (frameId % math.floor(frameRate1) == 0):
 		filename1 = imagesFolder + "/image_cam1_" + str(int(frameId)) + ".jpg"
-		cv2.imwrite(filename1, frame1)
+		print(filename1)
+
+		status1 = cv2.imwrite(filename1, frame1)
+		print("status 1", status1)
 		timestamps.write(str(get_time()) + "\n")
 
 		filename2 = imagesFolder + "/image_cam2_" + str(int(frameId)) + ".jpg"
-		cv2.imwrite(filename2, frame2)
+		status2 = cv2.imwrite(filename2, frame2)
+		print("status 2", status2)
+
 		timestamps.write(str(get_time()) + 2 * "\n")
 
 
@@ -67,5 +77,3 @@ writer2.release()
 cv2.destroyAllWindows()
 timestamps.close()
 
-def get_time():
-	return round(time.time() * 1000)
