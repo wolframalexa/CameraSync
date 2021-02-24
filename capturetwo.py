@@ -18,16 +18,19 @@ if not (camera1.isOpened()):
 if not (camera2.isOpened()):
 	print("Could not open camera 2")
 
+
+#To get the resolution
+width = 1024
+height = 768
+print("Dimensions:", width, height)
+
+
 # get frame rate
 frameRate1 = camera1.get(5)
 print("Frame rate for camera 1:", frameRate1)
 frameRate2 = camera2.get(5)
 print("Frame rate for camera 2:",frameRate2)
 
-
-#To get the resolution
-width = int(camera1.get(cv2.CAP_PROP_FRAME_WIDTH))
-height = int(camera1.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
 # set up writer
 writer1 = cv2.VideoWriter('samplevideocamera1.mp4', cv2.VideoWriter_fourcc(*'DIVX'), 30, (width,height))
