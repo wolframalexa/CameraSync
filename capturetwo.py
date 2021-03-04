@@ -10,8 +10,8 @@ def get_time():
 timestamps = open("timestamps.txt",'a')
 
 # open device
-camera1 = cv2.VideoCapture(0)
-camera2 = cv2.VideoCapture(1)
+camera1 = cv2.VideoCapture('v4l2src device=/dev/video0 io-mode=2 ! image/jpeg, width=(int)1920, height=(int)1080 ! jpegdec ! video/x-raw ! videoconvert ! video/x-raw,format=BGR ! appsink', cv2.CAP_GSTREAMER)
+camera2 = cv2.VideoCapture('v4l2src device=/dev/video1 io-mode=2 ! image/jpeg, width=(int)1920, height=(int)1080 ! jpegdec ! video/x-raw ! videoconvert ! video/x-raw,format=BGR ! appsink', cv2.CAP_GSTREAMER)
 
 if not (camera1.isOpened()):
 	print("Could not open camera 1")
@@ -20,8 +20,8 @@ if not (camera2.isOpened()):
 
 
 #To get the resolution
-width = 1024
-height = 768
+width = int(camera1.get(cv2.CAP_PROP_FRAME_WIDTH)) #1024
+height = int(camera1.get(cv2.CAP_PROP_FRAME_HEIGHT)) #768
 print("Dimensions:", width, height)
 
 
