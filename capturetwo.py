@@ -7,7 +7,7 @@ def get_time():
 
 
 #imagesFolder = "~/Documents/AutonomyLab/CameraSync/captures"
-timestamps = open("timestamps.txt",'a')
+timestamps = open("timestamps_no_graphics.txt",'a')
 
 # open device
 camera1 = cv2.VideoCapture('v4l2src device=/dev/video0 io-mode=2 ! image/jpeg, width=(int)1920, height=(int)1080 ! jpegdec ! video/x-raw ! videoconvert ! video/x-raw,format=BGR ! appsink', cv2.CAP_GSTREAMER)
@@ -46,8 +46,8 @@ while(True):
 	writer2.write(frame2)
 
 	# Display the resulting frame
-	cv2.imshow('preview1',frame1)
-	cv2.imshow('preview2',frame2)
+#	cv2.imshow('preview1',frame1)
+#	cv2.imshow('preview2',frame2)
 
 	# Capture frames every second
 	frameId = camera1.get(1) # current frame number
