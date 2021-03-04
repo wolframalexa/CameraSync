@@ -7,16 +7,23 @@ def get_time():
 
 
 #imagesFolder = "~/Documents/AutonomyLab/CameraSync/captures"
-timestamps = open("timestamps.txt",'a')
+timestamps = open("timestamps_no_graphics.txt",'a')
 
 # open device
-camera1 = cv2.VideoCapture(0)
-camera2 = cv2.VideoCapture(1)
+camera1 = cv2.VideoCapture('v4l2src device=/dev/video0 io-mode=2 ! image/jpeg, width=(int)1920, height=(int)1080 ! jpegdec ! video/x-raw ! videoconvert ! video/x-raw,format=BGR ! appsink', cv2.CAP_GSTREAMER)
+camera2 = cv2.VideoCapture('v4l2src device=/dev/video1 io-mode=2 ! image/jpeg, width=(int)1920, height=(int)1080 ! jpegdec ! video/x-raw ! videoconvert ! video/x-raw,format=BGR ! appsink', cv2.CAP_GSTREAMER)
 
 if not (camera1.isOpened()):
 	print("Could not open camera 1")
 if not (camera2.isOpened()):
 	print("Could not open camera 2")
+
+
+#To get the resolution
+width = int(camera1.get(cv2.CAP_PROP_FRAME_WIDTH)) #1024
+height = int(camera1.get(cv2.CAP_PROP_FRAME_HEIGHT)) #768
+print("Dimensions:", width, height)
+
 
 # get frame rate
 frameRate1 = camera1.get(5)
@@ -24,10 +31,6 @@ print("Frame rate for camera 1:", frameRate1)
 frameRate2 = camera2.get(5)
 print("Frame rate for camera 2:",frameRate2)
 
-
-#To get the resolution
-width = int(camera1.get(cv2.CAP_PROP_FRAME_WIDTH))
-height = int(camera1.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
 # set up writer
 writer1 = cv2.VideoWriter('samplevideocamera1.mp4', cv2.VideoWriter_fourcc(*'DIVX'), 30, (width,height))
@@ -43,8 +46,8 @@ while(True):
 	writer2.write(frame2)
 
 	# Display the resulting frame
-	cv2.imshow('preview1',frame1)
-	cv2.imshow('preview2',frame2)
+#	cv2.imshow('preview1',frame1)
+#	cv2.imshow('preview2',frame2)
 
 	# Capture frames every second
 	frameId = camera1.get(1) # current frame number
