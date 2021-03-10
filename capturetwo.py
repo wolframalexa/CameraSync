@@ -33,8 +33,8 @@ print("Frame rate for camera 2:",frameRate2)
 
 
 # set up writer
-#writer1 = cv2.VideoWriter('samplevideocamera1.mp4', cv2.VideoWriter_fourcc(*'DIVX'), 30, (width,height))
-#writer2 = cv2.VideoWriter('samplevideocamera2.mp4', cv2.VideoWriter_fourcc(*'DIVX'), 30, (width,height))
+writer1 = cv2.VideoWriter('samplevideocamera1.mp4', cv2.VideoWriter_fourcc(*'DIVX'), 30, (width,height))
+writer2 = cv2.VideoWriter('samplevideocamera2.mp4', cv2.VideoWriter_fourcc(*'DIVX'), 30, (width,height))
 # DIVX is the video codec, works on all platforms
 
 while(True):
