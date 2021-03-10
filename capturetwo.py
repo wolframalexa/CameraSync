@@ -20,8 +20,8 @@ if not (camera2.isOpened()):
 
 
 #To get the resolution
-width = int(camera1.get(cv2.CAP_PROP_FRAME_WIDTH)) #1024
-height = int(camera1.get(cv2.CAP_PROP_FRAME_HEIGHT)) #768
+width = int(camera1.get(cv2.CAP_PROP_FRAME_WIDTH))
+height = int(camera1.get(cv2.CAP_PROP_FRAME_HEIGHT))
 print("Dimensions:", width, height)
 
 
@@ -40,25 +40,27 @@ writer2 = cv2.VideoWriter('samplevideocamera2.mp4', cv2.VideoWriter_fourcc(*'DIV
 while(True):
 	# Capture frame-by-frame
 	ret1, frame1 = camera1.read()
-	writer1.write(frame1)
+	timestamps.write(str(get_time()) + "\n")
+#	writer1.write(frame1)
 
 	ret2, frame2 = camera2.read()
-	writer2.write(frame2)
+	timestamps.write(str(get_time()) + 2 * "\n")
+#	writer2.write(frame2)
 
 	# Display the resulting frame
 #	cv2.imshow('preview1',frame1)
 #	cv2.imshow('preview2',frame2)
 
 	# Capture frames every second
-	frameId = camera1.get(1) # current frame number
-	if (frameId % int(frameRate1) == 0):
-		filename1 =  "captures/image_cam1_" + str(int(frameId)) + ".jpg"
-		status1 = cv2.imwrite(filename1, frame1)
-		timestamps.write(str(get_time()) + "\n")
+#	frameId = camera1.get(1) # current frame number
+#	if (frameId % int(frameRate1) == 0):
+#		filename1 =  "captures/image_cam1_" + str(int(frameId)) + ".jpg"
+#		status1 = cv2.imwrite("captures/camera1.jpg", frame1)
+#		timestamps.write(str(get_time()) + "\n")
 
-		filename2 =  "captures/image_cam2_" + str(int(frameId)) + ".jpg"
-		status2 = cv2.imwrite(filename2, frame2)
-		timestamps.write(str(get_time()) + 2 * "\n")
+#		filename2 =  "captures/image_cam2_" + str(int(frameId)) + ".jpg"
+#		status2 = cv2.imwrite("captures/camera2.jpg", frame2)
+#		timestamps.write(str(get_time()) + 2 * "\n")
 
 
 	#Waits for a user input to quit the application
@@ -69,8 +71,8 @@ while(True):
 camera1.release()
 camera2.release()
 
-writer1.release()
-writer2.release()
+#writer1.release()
+#writer2.release()
 
 cv2.destroyAllWindows()
 timestamps.close()
