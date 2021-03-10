@@ -48,8 +48,8 @@ while(True):
 #	writer2.write(frame2)
 
 	# Display the resulting frame
-#	cv2.imshow('preview1',frame1)
-#	cv2.imshow('preview2',frame2)
+	cv2.imshow('preview1',frame1)
+	cv2.imshow('preview2',frame2)
 
 	# Capture frames every second
 #	frameId = camera1.get(1) # current frame number
