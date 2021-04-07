@@ -9,9 +9,9 @@ def get_time():
 
 #imagesFolder = "~/Documents/AutonomyLab/CameraSync/captures"
 
-n = 36000 # timestamp every 0.1 second for an hour
-time1 = np.zeroes((1,n))
-time2 = np.zeroes((1,n))
+n = 100 # timestamp every 0.1 second for an hour
+time1 = np.zeros((n,1))
+time2 = np.zeros((n,1))
 
 # open device
 camera1 = cv2.VideoCapture('v4l2src device=/dev/video0 io-mode=2 ! image/jpeg, width=(int)1920, height=(int)1080 ! jpegdec ! video/x-raw ! videoconvert ! video/x-raw,format=BGR ! appsink', cv2.CAP_GSTREAMER)
@@ -63,7 +63,7 @@ while(True):
 		print(i)
 
 	#Waits for a user input to quit the application
-	if i == 3600 | (cv2.waitKey(1) & 0xFF == ord('q')):
+	if i == n | (cv2.waitKey(1) & 0xFF == ord('q')):
 		break
 
 camera1.release()
@@ -75,6 +75,6 @@ camera2.release()
 cv2.destroyAllWindows()
 
 f = open("001d_timedata.txt",'a')
-f.write(time1)
-f.write(time2)
+f.write(str(time1))
+f.write(str(time2))
 f.close()
