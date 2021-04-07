@@ -9,7 +9,7 @@ def get_time():
 
 #imagesFolder = "~/Documents/AutonomyLab/CameraSync/captures"
 
-n = 100000 # timestamp every 0.1 second for an hour
+n = 100 # timestamp every 0.1 second for an hour
 time1 = np.zeros((n,1))
 time2 = np.zeros((n,1))
 
@@ -36,14 +36,16 @@ writer1 = cv2.VideoWriter('009_video1.mp4v', cv2.VideoWriter_fourcc(*'hevc'), 30
 writer2 = cv2.VideoWriter('009_video2.mp4v', cv2.VideoWriter_fourcc(*'hevc'), 30, (width,height))
 
 i = 0
+offset = get_time()
+starttime = time.time()
 while(True):
 	# Capture frame-by-frame
 	ret1, frame1 = camera1.read()
-	time1[i] = get_time()
+	time1[i] = get_time()-offset
 #	writer1.write(frame1)
 
 	ret2, frame2 = camera2.read()
-	time2[i] = get_time()
+	time2[i] = get_time()-offset
 #	writer2.write(frame2)
 
 	# Display the resulting frame
@@ -62,10 +64,10 @@ while(True):
 #		status2 = cv2.imwrite(filename2, frame2)
 #		time2[i] = frameId2/frameRate2
 	i +=1
-	print(i)
 
 	#Waits for a user input to quit the application
 	if i == n | (cv2.waitKey(1) & 0xFF == ord('q')):
+		endtime = time.time()
 		break
 
 camera1.release()
@@ -80,3 +82,5 @@ f = open("001d_timedata.txt",'a')
 f.write(str(time1))
 f.write(str(time2))
 f.close()
+
+print(starttime, endtime)
