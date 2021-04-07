@@ -26,8 +26,8 @@ frameRate1 = camera1.get(5)
 frameRate2 = camera2.get(5)
 
 # set up writer
-writer1 = cv2.VideoWriter('009_video1.mp4v', cv2.VideoWriter_fourcc(*'hevc'), 30, (width,height))
-writer2 = cv2.VideoWriter('009_video2.mp4v', cv2.VideoWriter_fourcc(*'hevc'), 30, (width,height))
+writer1 = cv2.VideoWriter('003_video1.mp4v', cv2.VideoWriter_fourcc(*'mp4v'), 30, (width,height))
+writer2 = cv2.VideoWriter('003_video2.mp4v', cv2.VideoWriter_fourcc(*'mp4v'), 30, (width,height))
 
 i = 0
 starttime = time.time()
@@ -35,27 +35,16 @@ while(True):
 	# Capture frame-by-frame
 	ret1, frame1 = camera1.read()
 	time1[i] = time.time() - starttime
-#	writer1.write(frame1)
+	writer1.write(frame1)
 
 	ret2, frame2 = camera2.read()
 	time2[i] = time.time() - starttime
-#	writer2.write(frame2)
+	writer2.write(frame2)
 
 	# Display the resulting frame
-#	cv2.imshow('preview1',frame1)
-#	cv2.imshow('preview2',frame2)
+	cv2.imshow('preview1',frame1)
+	cv2.imshow('preview2',frame2)
 
-	# Capture frames every tenth of a second
-#	frameId1 = camera1.get(1) # current frame number
-#	frameId2 = camera2.get(1)
-#	if ((frameId1 * 10) % int(frameRate1) == 0):
-#		filename1 =  "captures/004_image1_" + str(int(frameId)) + ".jpg"
-#		status1 = cv2.imwrite(filename1, frame1)
-#		time1[i] = frameId1/frameRate1
-
-#		filename2 =  "captures/004_image2_" + str(int(frameId)) + ".jpg"
-#		status2 = cv2.imwrite(filename2, frame2)
-#		time2[i] = frameId2/frameRate2
 	i +=1
 
 	#Waits for a user input to quit the application
@@ -66,12 +55,12 @@ while(True):
 camera1.release()
 camera2.release()
 
-#writer1.release()
-#writer2.release()
+writer1.release()
+writer2.release()
 
 cv2.destroyAllWindows()
 
-f = open("001d_timedata.txt",'a')
+f = open("003d_timedata.txt",'a')
 f.write(str(time1))
 f.write(str(time2))
 f.write("Start time: " + str(starttime))
