@@ -3,7 +3,7 @@ import math
 import time
 import numpy as np
 
-n = 100
+n = 100000
 time1 = np.zeros((n,1))
 time2 = np.zeros((n,1))
 
