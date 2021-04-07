@@ -73,3 +73,8 @@ camera2.release()
 #writer2.release()
 
 cv2.destroyAllWindows()
+
+f = open("001d_timedata.txt",'a')
+f.write(time1)
+f.write(time2)
+f.close()
