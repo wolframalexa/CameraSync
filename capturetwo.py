@@ -9,7 +9,7 @@ def get_time():
 
 #imagesFolder = "~/Documents/AutonomyLab/CameraSync/captures"
 
-n = 100 # timestamp every 0.1 second for an hour
+n = 100000 # timestamp every 0.1 second for an hour
 time1 = np.zeros((n,1))
 time2 = np.zeros((n,1))
 
@@ -39,9 +39,11 @@ i = 0
 while(True):
 	# Capture frame-by-frame
 	ret1, frame1 = camera1.read()
+	time1[i] = get_time()
 #	writer1.write(frame1)
 
 	ret2, frame2 = camera2.read()
+	time2[i] = get_time()
 #	writer2.write(frame2)
 
 	# Display the resulting frame
@@ -49,18 +51,18 @@ while(True):
 #	cv2.imshow('preview2',frame2)
 
 	# Capture frames every tenth of a second
-	frameId1 = camera1.get(1) # current frame number
-	frameId2 = camera2.get(1)
-	if ((frameId1 * 10) % int(frameRate1) == 0):
+#	frameId1 = camera1.get(1) # current frame number
+#	frameId2 = camera2.get(1)
+#	if ((frameId1 * 10) % int(frameRate1) == 0):
 #		filename1 =  "captures/004_image1_" + str(int(frameId)) + ".jpg"
 #		status1 = cv2.imwrite(filename1, frame1)
-		time1[i] = frameId1/frameRate1
+#		time1[i] = frameId1/frameRate1
 
 #		filename2 =  "captures/004_image2_" + str(int(frameId)) + ".jpg"
 #		status2 = cv2.imwrite(filename2, frame2)
-		time2[i] = frameId2/frameRate2
-		i +=1
-		print(i)
+#		time2[i] = frameId2/frameRate2
+	i +=1
+	print(i)
 
 	#Waits for a user input to quit the application
 	if i == n | (cv2.waitKey(1) & 0xFF == ord('q')):
