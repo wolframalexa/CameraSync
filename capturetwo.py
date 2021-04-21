@@ -12,7 +12,7 @@ class camThread(threading.Thread):
 		self.camID = camID
 		self.timearray = timearray
 	def run(self):
-		print "Starting " + self.previewName
+		print "Starting " + self.previewName + "!"
 		camPreview(self.previewName, self.camID, self.timearray)
 
 def camPreview(previewName, camID, timearray):
