@@ -20,6 +20,7 @@ def camPreview(previewName, camID, timearray):
 	cam = cv2.VideoCapture('v4l2src device=/dev/video' + str(camID) + ' io-mode=2 ! image/jpeg, width=(int)1920, height=(int)1080 ! jpegdec ! video/x-raw ! videoconvert ! video/x-raw,format=BGR ! appsink', cv2.CAP_GSTREAMER)
 	writer = cv2.VideoWriter('004_video1.mp4v', cv2.VideoWriter_fourcc(*'mp4v'), 30, (width,height))
 	frameRate = cam.get(5)
+	print("Frame rate: ", frameRate)
 
 	if cam.isOpened(): #try to get first frame
 		rval, frame = cam.read()
