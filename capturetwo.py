@@ -12,14 +12,25 @@ class camThread(threading.Thread):
 		self.camID = camID
 		self.timearray = timearray
 	def run(self):
-		print "Starting " + self.previewName + "!"
+		print("Starting " + self.previewName + "!")
 		camPreview(self.previewName, self.camID, self.timearray)
 
 def camPreview(previewName, camID, timearray):
-	print("In function camPreview)
-	cv2.namedWindow(previewName)
+	print("In function camPreview")
+	width = 1920
+	height = 1080
+	i = 0
+	print(width,height)
+
+#	cv2.namedWindow(previewName)
+	print("checkpoint 1")
+
 	cam = cv2.VideoCapture('v4l2src device=/dev/video' + str(camID) + ' io-mode=2 ! image/jpeg, width=(int)1920, height=(int)1080 ! jpegdec ! video/x-raw ! videoconvert ! video/x-raw,format=BGR ! appsink', cv2.CAP_GSTREAMER)
+	print("checkpoint 2")
+
 	writer = cv2.VideoWriter('004_video1.mp4v', cv2.VideoWriter_fourcc(*'mp4v'), 30, (width,height))
+	print("checkpoint 3")
+
 	frameRate = cam.get(5)
 	print("Frame rate: ", frameRate)
 
@@ -41,14 +52,14 @@ def camPreview(previewName, camID, timearray):
 			print("Index of timearray: ", i)
 			i += 1
 
-		if i == n | key == 27: # exit on ESC
+		if i == n: # exit when array full
 			endtime = time.time()
 			break
 	cam.release()
 	writer.release()
 	cv2.destroyWindow(previewName)
 
-n = 100
+n = 10
 time1 = np.zeros((n,1))
 time2 = np.zeros((n,1))
 
