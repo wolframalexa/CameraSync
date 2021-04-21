@@ -6,15 +6,17 @@ import numpy as np
 
 
 class camThread(threading.Thread):
-	def __init__(self, previewName, camID):
+	def __init__(self, previewName, camID, timearray):
 		threading.Thread.__init__(self)
 		self.previewName = previewName
 		self.camID = camID
-	def run(self, timearray):
+		self.timearray = timearray
+	def run(self):
 		print "Starting " + self.previewName
-		camPreview(self.previewName, self.camID, timearray)
+		camPreview(self.previewName, self.camID, self.timearray)
 
 def camPreview(previewName, camID, timearray):
+	print("In function camPreview)
 	cv2.namedWindow(previewName)
 	cam = cv2.VideoCapture('v4l2src device=/dev/video' + str(camID) + ' io-mode=2 ! image/jpeg, width=(int)1920, height=(int)1080 ! jpegdec ! video/x-raw ! videoconvert ! video/x-raw,format=BGR ! appsink', cv2.CAP_GSTREAMER)
 	writer = cv2.VideoWriter('004_video1.mp4v', cv2.VideoWriter_fourcc(*'mp4v'), 30, (width,height))
@@ -59,7 +61,7 @@ thread2.start()
 
 
 # write data
-f = open("001d_timedata.txt",'a')
+f = open("004d_timedata.txt",'a')
 f.write(str(time1))
 f.write(str(time2))
 f.close()
