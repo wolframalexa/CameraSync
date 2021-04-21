@@ -6,13 +6,14 @@ import numpy as np
 
 
 class camThread(threading.Thread):
-	def __init__(self, previewName, camID):
+	def __init__(self, previewName, camID, timearray):
 		threading.Thread.__init__(self)
 		self.previewName = previewName
 		self.camID = camID
-	def run(self, timearray):
-		print "Starting " + self.previewName
-		camPreview(self.previewName, self.camID, timearray)
+		self.timearray = timearray
+	def run(self):
+		print("Starting " + self.previewName)
+		camPreview(self.previewName, self.camID, self.timearray)
 
 def camPreview(previewName, camID, timearray):
 	cv2.namedWindow(previewName)
