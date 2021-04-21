@@ -36,6 +36,7 @@ def camPreview(previewName, camID, timearray):
 		if (frameId % int(frameRate) == 0):
 			filename = "captures/004_image_" + str(int(frameId)) + ".jpg"
 			timearray[i] = time.time() - starttime
+			print("Index of timearray: ", i)
 			i += 1
 
 		if i == n | key == 27: # exit on ESC
