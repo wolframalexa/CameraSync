@@ -16,12 +16,6 @@ class camThread(threading.Thread):
 		camPreview(self.previewName, self.camID, self.timearray)
 
 def camPreview(previewName, camID, timearray):
-<<<<<<< HEAD
-=======
-	width = 1920
-	height = 1080
-	i = 0
->>>>>>> cce58eae6872ae668e6d10efb70482edb35594f0
 
 	cam = cv2.VideoCapture('v4l2src device=/dev/video' + str(camID) + ' io-mode=2 ! image/jpeg, width=(int)1920, height=(int)1080 ! jpegdec ! video/x-raw ! videoconvert ! video/x-raw,format=BGR ! appsink', cv2.CAP_GSTREAMER)
 	writer = cv2.VideoWriter('004_video1.mp4v', cv2.VideoWriter_fourcc(*'mp4v'), 30, (width,height))
@@ -31,24 +25,16 @@ def camPreview(previewName, camID, timearray):
 	if not cam.isOpened():
 		print("Could not open camera")
 
+	i = 0
 	while True:
 		rval, frame = cam.read()
 		writer.write(frame)
-<<<<<<< HEAD
-		cv2.imshow(previewName,frame)
-=======
 		cv2.imshow(previewName, frame)
->>>>>>> cce58eae6872ae668e6d10efb70482edb35594f0
 
 		frameId = cam.get(1)
 		if (frameId % int(frameRate) == 0):
 			filename = "captures/004_image_" + str(int(frameId)) + ".jpg"
-<<<<<<< HEAD
 			cv2.imwrite(filename,frame)
-=======
-			cv2.imwrite(filename, frame)
-
->>>>>>> cce58eae6872ae668e6d10efb70482edb35594f0
 			timearray[i] = time.time() - starttime
 			i += 1
 
@@ -75,16 +61,7 @@ thread1.exit()
 thread2.exit()
 
 # write data
-<<<<<<< HEAD
 f = open("004d_timedata.txt",'a')
-f.write(str(time1.timearray)
+f.write(str(time1.timearray))
 f.write(str(time2.timearray))
 f.close()
-=======
-f = open("004d_timedata.txt",'w')
-print(thread1.timearray)
-print(thread2.timearray)
-#f.write(str(thread1.timearray))
-#f.write(str(thread2.timearray))
-#f.close()
->>>>>>> cce58eae6872ae668e6d10efb70482edb35594f0
