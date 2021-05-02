@@ -14,13 +14,16 @@ class camThread(threading.Thread):
 		self.lock = lock
 	def run(self):
 		print("Starting " + self.previewName + "!")
-		camPreview(self, lock)
+		camPreview(self)
 
 
 def camPreview(thread_obj):
 	previewName = thread_obj.previewName
 	camID = thread_obj.camID
 	timearray = thread_obj.timearray
+
+	width = 1920
+	height = 1080
 
 	with thread_obj.lock:
 		cam = cv2.VideoCapture('v4l2src device=/dev/video' + str(camID) + ' io-mode=2 ! image/jpeg, width=(int)1920, height=(int)1080 ! jpegdec ! video/x-raw ! videoconvert ! video/x-raw,format=BGR ! appsink', cv2.CAP_GSTREAMER)
@@ -67,11 +70,8 @@ thread2.start()
 thread1.join() # wait until thread executes
 thread2.join()
 
-thread1.exit()
-thread2.exit()
-
 # write data
 f = open("004d_timedata.txt",'w')
-f.write(str(time1.timearray))
-f.write(str(time2.timearray))
+f.write(str(thread1.timearray))
+f.write(str(thread2.timearray))
 f.close()
