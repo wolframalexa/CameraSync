@@ -14,6 +14,9 @@ class camThread(threading.Thread):
 	def run(self):
 		print("Starting " + self.previewName + "!")
 		camPreview(self)
+	def acquire(self):
+		self.acquire()
+
 
 def camPreview(thread):
 
