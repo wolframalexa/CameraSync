@@ -13,12 +13,18 @@ class camThread(threading.Thread):
 		self.timearray = timearray
 	def run(self):
 		print("Starting " + self.previewName + "!")
-		camPreview(self.previewName, self.camID, self.timearray)
+		camPreview(self)
 
-def camPreview(previewName, camID, timearray):
+def camPreview(thread):
 
+	previewName = thread.previewName
+	camID = thread.camID
+	timearray = thread.timearray
+
+	thread.acquire() # prevent race condition when opening camera
 	cam = cv2.VideoCapture('v4l2src device=/dev/video' + str(camID) + ' io-mode=2 ! image/jpeg, width=(int)1920, height=(int)1080 ! jpegdec ! video/x-raw ! videoconvert ! video/x-raw,format=BGR ! appsink', cv2.CAP_GSTREAMER)
 	writer = cv2.VideoWriter('004_video1.mp4v', cv2.VideoWriter_fourcc(*'mp4v'), 30, (width,height))
+	thread.release()
 
 	frameRate = cam.get(5)
 
@@ -29,7 +35,10 @@ def camPreview(previewName, camID, timearray):
 	while True:
 		rval, frame = cam.read()
 		writer.write(frame)
+
+		thread.acquire() # preven race condition when showing image
 		cv2.imshow(previewName, frame)
+		thread.release()
 
 		frameId = cam.get(1)
 		if (frameId % int(frameRate) == 0):
@@ -39,7 +48,7 @@ def camPreview(previewName, camID, timearray):
 			i += 1
 
 		if i == n: # exit when array full
-			endtime = time.time()
+#			endtime = time.time()
 			break
 	cam.release()
 	writer.release()
@@ -56,12 +65,14 @@ starttime = time.time()
 thread1.start()
 thread2.start()
 
+thread1.join() # wait until thread executes
+thread2.join()
 
 thread1.exit()
 thread2.exit()
 
 # write data
-f = open("004d_timedata.txt",'a')
+f = open("004d_timedata.txt",'w')
 f.write(str(time1.timearray))
 f.write(str(time2.timearray))
 f.close()
