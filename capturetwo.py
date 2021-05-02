@@ -14,20 +14,16 @@ class camThread(threading.Thread):
 	def run(self):
 		print("Starting " + self.previewName + "!")
 		camPreview(self)
-	def acquire(self):
-		self.acquire()
 
 
-def camPreview(thread):
+def camPreview(self):
+	previewName = self.previewName
+	camID = self.camID
+	timearray = self.timearray
 
-	previewName = thread.previewName
-	camID = thread.camID
-	timearray = thread.timearray
-
-	thread.acquire() # prevent race condition when opening camera
-	cam = cv2.VideoCapture('v4l2src device=/dev/video' + str(camID) + ' io-mode=2 ! image/jpeg, width=(int)1920, height=(int)1080 ! jpegdec ! video/x-raw ! videoconvert ! video/x-raw,format=BGR ! appsink', cv2.CAP_GSTREAMER)
-	writer = cv2.VideoWriter('004_video1.mp4v', cv2.VideoWriter_fourcc(*'mp4v'), 30, (width,height))
-	thread.release()
+	with self.lock:
+		cam = cv2.VideoCapture('v4l2src device=/dev/video' + str(camID) + ' io-mode=2 ! image/jpeg, width=(int)1920, height=(int)1080 ! jpegdec ! video/x-raw ! videoconvert ! video/x-raw,format=BGR ! appsink', cv2.CAP_GSTREAMER)
+		writer = cv2.VideoWriter('004_video1.mp4v', cv2.VideoWriter_fourcc(*'mp4v'), 30, (width,height))
 
 	frameRate = cam.get(5)
 
