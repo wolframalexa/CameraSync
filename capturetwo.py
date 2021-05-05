@@ -2,9 +2,9 @@ import cv2
 import time
 import numpy as np
 from multiprocessing import Process
+import Queue
 
-
-def runCamera(camID, timearray):
+def runCamera(camID, timearray, out_q):
 	width = 1920
 	height = 1080
 
@@ -35,11 +35,13 @@ def runCamera(camID, timearray):
 	cap.release()
 	writer.release()
 	cv2.destroyAllWindows()
-	return timearray
+	out_q.put(timearray)
 
 n = 10
 time1 = np.zeros((n,1))
 time2 = np.zeros((n,1))
+
+results = Queue()
 
 p1 = Process(target = runCamera, args=(0, time1,))
 p2 = Process(target = runCamera, args=(1, time2,))
@@ -48,11 +50,14 @@ starttime = time.time()
 p1.start()
 p2.start()
 
+resultdict = {}
+for i in range(2):
+	resultdict.update(results.get())
+
 p1.join()
 p2.join()
 
 # write data
 f = open("004d_timedata.txt",'w')
-f.write(str(time1))
-f.write(str(time2))
+f.write(str(resultdict))
 f.close()
