@@ -30,12 +30,12 @@ def runCamera(camID, timearray, out_q):
 			i += 1
 
 		if i == n: # exit when array full
+			out_q.put(timearray)
 			break
 
 	cap.release()
 	writer.release()
 	cv2.destroyAllWindows()
-	out_q.put(timearray)
 
 n = 10
 time1 = np.zeros((n,1))
@@ -51,11 +51,12 @@ p1.start()
 p2.start()
 
 resultdict = {}
-for i in range(2):
+while not results.empty():
 	resultdict.update(results.get())
 
 p1.join()
 p2.join()
+print(resultdict)
 
 # write data
 f = open("004d_timedata.txt",'w')
