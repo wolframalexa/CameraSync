@@ -1,77 +1,58 @@
 import cv2
-import threading
-import math
 import time
 import numpy as np
+import multiprocessing import Process
 
 
-class camThread(threading.Thread):
-	def __init__(self, previewName, camID, timearray, lock):
-		threading.Thread.__init__(self)
-		self.previewName = previewName
-		self.camID = camID
-		self.timearray = timearray
-		self.lock = lock
-	def run(self):
-		print("Starting " + self.previewName + "!")
-		camPreview(self)
-
-
-def camPreview(thread_obj):
-	previewName = thread_obj.previewName
-	camID = thread_obj.camID
-	timearray = thread_obj.timearray
-
+def runCamera(camID, timearray):
 	width = 1920
 	height = 1080
 
-	with thread_obj.lock:
-		cam = cv2.VideoCapture('v4l2src device=/dev/video' + str(camID) + ' io-mode=2 ! image/jpeg, width=(int)1920, height=(int)1080 ! jpegdec ! video/x-raw ! videoconvert ! video/x-raw,format=BGR ! appsink', cv2.CAP_GSTREAMER)
-		writer = cv2.VideoWriter('004_video1.mp4v', cv2.VideoWriter_fourcc(*'mp4v'), 30, (width,height))
-
-	frameRate = cam.get(5)
+	cap = cv2.VideoCapture('v4l2src device=/dev/video' + str(camID) + ' io-mode=2 ! image/jpeg, width=(int)1920, height=(int)1080 ! jpegdec ! video/x-raw ! videoconvert ! video/x-raw,format=BGR ! appsink', cv2.CAP_GSTREAMER)
+	writer = cv2.VideoWriter('004_video' + str(camID) + '.mp4v', cv2.VideoWriter_fourcc(*'mp4v'), 30, (width, height)
+	frameRate = cap.get(5)
 
 	if not cam.isOpened():
 		print("Could not open camera")
 
 	i = 0
-	while True:
-		rval, frame = cam.read()
+	while(True):
+		ret, frame = cap.read()
 		writer.write(frame)
 
-		with thread_obj.lock:
-			cv2.imshow(previewName, frame)
+		cv2.imshow("Camera 0",frame)
 
 		frameId = cam.get(1)
 		if (frameId % int(frameRate) == 0):
-			filename = "captures/004_image_" + str(int(frameId)) + ".jpg"
+			filename = "captures/004_image_" + str(camID) + frameId + ".jpg"
 			cv2.imwrite(filename,frame)
 			timearray[i] = time.time() - starttime
 			i += 1
 
 		if i == n: # exit when array full
 			break
-	cam.release()
+
+	cap.release()
 	writer.release()
-	cv2.destroyWindow(previewName)
+	cv2.destroyAllWindows()
+
 
 n = 10
 time1 = np.zeros((n,1))
 time2 = np.zeros((n,1))
 
-lock = threading.Lock()
-thread1 = camThread("Camera 1", 0, time1, lock)
-thread2 = camThread("Camera 2", 1, time2, lock)
+p1 = Process(target = runCamera, args=(0, time1,))
+p2 = Process(target = runCamera, args=(1, time2,))
 
 starttime = time.time()
-thread1.start()
-thread2.start()
+p1.start()
+p2.start()
 
-thread1.join() # wait until thread executes
-thread2.join()
+p1.join()
+p2.join()
 
 # write data
 f = open("004d_timedata.txt",'w')
-f.write(str(thread1.timearray))
-f.write(str(thread2.timearray))
+f.write(str(time1))
+f.write(str(time2))
 f.close()
