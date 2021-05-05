@@ -2,7 +2,7 @@ import cv2
 import time
 import numpy as np
 from multiprocessing import Process
-import Queue
+from queue import Queue
 
 def runCamera(camID, timearray, out_q):
 	width = 1920
@@ -43,8 +43,8 @@ time2 = np.zeros((n,1))
 
 results = Queue()
 
-p1 = Process(target = runCamera, args=(0, time1,))
-p2 = Process(target = runCamera, args=(1, time2,))
+p1 = Process(target = runCamera, args=(0, time1, results,))
+p2 = Process(target = runCamera, args=(1, time2, results,))
 
 starttime = time.time()
 p1.start()
